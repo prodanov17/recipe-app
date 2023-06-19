@@ -1,5 +1,6 @@
 import React from "react";
-import { SearchIcon } from "../../assets/searchIcons";
+import { EmptyFridge } from "../../assets/illustrations";
+import { FridgeIcon, SearchIcon } from "../../assets/searchIcons";
 import Input from "../../UI/Input";
 import SearchTabs from "./components/SearchTabs";
 
@@ -7,18 +8,15 @@ const SearchByIngredients = () => {
   return (
     <>
       <SearchTabs active="ingredients" />
-      <Input id="searchBar" placeholder="Search recipes">
-        <SearchIcon />
-      </Input>
-      <Input id="searchBar" placeholder="Search recipes">
-        <SearchIcon />
-      </Input>
-
-      <button className="text-primary self-start pl-4 font-medium underline ">
-        Advanced search...
-      </button>
-      <button className="bg-primary text-white font-medium text-lg w-full shadow-lg mb-8 py-1.5 px-4 rounded-lg">
-        Search
+      <section className=" text-neutral-700 mt-4">
+        <span className="relative left-10">
+          <EmptyFridge />
+        </span>
+        <p>Looks like your fridge is empty.</p>
+      </section>
+      <button className="bg-accent text-accent-text font-medium flex items-center justify-center gap-3 text-lg shadow-lg mb-8 py-1.5 px-16 mt-4 rounded-lg">
+        <FridgeIcon />
+        My fridge
       </button>
     </>
   );

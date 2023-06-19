@@ -15,6 +15,11 @@ import Slider from "../../UI/Slider";
 import Tag from "../../UI/Tag";
 import SearchTabs from "./components/SearchTabs";
 
+const maxValueCalories = 1200;
+const maxValueCarbs = 200;
+const maxValueFats = 100;
+const maxValueProtein = 100;
+
 const SearchByNutrients = () => {
   const [advancedSearch, toggleAdvancedSearch] = useState(false);
   const tagContext = useOutletContext();
@@ -22,14 +27,47 @@ const SearchByNutrients = () => {
   const advancedSearchHandler = () => {
     toggleAdvancedSearch((prev) => !prev);
   };
-  const cuisineHandler = () => {};
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    // console.log(e.target.searchBar.value);
+    console.log((maxValueCalories * e.target.calories.value) / 100);
+    console.log((maxValueCarbs * e.target.carbs.value) / 100);
+    console.log((maxValueFats * e.target.fats.value) / 100);
+    console.log((maxValueProtein * e.target.protein.value) / 100);
+    console.log(tagContext.cuisineTags);
+    console.log(tagContext.dietTags);
+    console.log(tagContext.intoleranceTags);
+  };
+
   return (
-    <>
+    <form
+      className="flex flex-col gap-4 items-center w-full"
+      onSubmit={submitHandler}
+    >
       <SearchTabs active="nutrients" />
       <div className="flex gap-1 items-center self-start max-w-[700px] flex-wrap -mb-2 mt-4">
-        {[...tagContext.tags].map((e, index) => {
+        {[...tagContext.cuisineTags].map((e, index) => {
           return (
-            <Tag key={index} removeTag={tagContext.removeTag}>
+            <Tag key={index} removeTag={tagContext.removeTag} type="cuisine">
+              {e}
+            </Tag>
+          );
+        })}
+        {[...tagContext.dietTags].map((e, index) => {
+          return (
+            <Tag key={index} removeTag={tagContext.removeTag} type="diets">
+              {e}
+            </Tag>
+          );
+        })}
+        {[...tagContext.intoleranceTags].map((e, index) => {
+          return (
+            <Tag
+              key={index}
+              removeTag={tagContext.removeTag}
+              type="intolerances"
+            >
               {e}
             </Tag>
           );
@@ -41,7 +79,7 @@ const SearchByNutrients = () => {
         }`}
       >
         <div className="w-full">
-          <Slider unit="kcal" maxValue={1200} className="my-4">
+          <Slider id="calories" unit="kcal" maxValue={1200} className="my-4">
             <p className="flex items-center gap-2">
               Calories{" "}
               {
@@ -51,7 +89,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider unit="g" maxValue={200} className="mb-4">
+          <Slider id="carbs" unit="g" maxValue={200} className="mb-4">
             <p className="flex items-center gap-2">
               Carbs{" "}
               {
@@ -61,7 +99,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider unit="g" maxValue={100} className="mb-4">
+          <Slider id="fats" unit="g" maxValue={100} className="mb-4">
             <p className="flex items-center gap-2">
               Fats{" "}
               {
@@ -71,7 +109,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider unit="g" maxValue={100}>
+          <Slider id="protein" unit="g" maxValue={100}>
             <p className="flex items-center gap-2">
               Protein{" "}
               {
@@ -95,8 +133,7 @@ const SearchByNutrients = () => {
                 <SearchIcon />
               </Input>
               <Input
-                onChange={cuisineHandler}
-                id="searchBar"
+                id="cuisine"
                 placeholder="Select cuisines"
                 type="text"
                 suggestions={Cuisines}
@@ -107,7 +144,7 @@ const SearchByNutrients = () => {
                 <RecipesIcon />
               </Input>
               <Input
-                id="searchBar"
+                id="diets"
                 placeholder="Select diets"
                 type="text"
                 suggestions={Diets}
@@ -118,7 +155,7 @@ const SearchByNutrients = () => {
                 <DietIcon />
               </Input>
               <Input
-                id="searchBar"
+                id="intolerances"
                 placeholder="Select intolerances"
                 type="text"
                 suggestions={Intolerances}
@@ -133,15 +170,19 @@ const SearchByNutrients = () => {
         )}
       </section>
       <button
+        type="button"
         onClick={advancedSearchHandler}
-        className="text-primary self-start pl-4 font-medium underline "
+        className="text-primary self-start pl-4 font-medium underline"
       >
         {advancedSearch ? "Basic search..." : "Advanced search..."}
       </button>
-      <button className="bg-primary text-white font-medium text-lg w-full shadow-lg mb-8 py-1.5 px-4 rounded-lg">
+      <button
+        type="submit"
+        className="bg-primary text-white font-medium text-lg w-full shadow-lg mb-8 py-1.5 px-4 rounded-lg"
+      >
         Search
       </button>
-    </>
+    </form>
   );
 };
 

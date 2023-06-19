@@ -17,6 +17,7 @@ const Slider = ({ id, children, className, unit, maxValue }) => {
       </label>
       <input
         id={id}
+        name={id}
         type="range"
         onChange={rangeHandler}
         // onClick={rangeHandler}

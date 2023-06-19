@@ -12,3 +12,9 @@ export const capitalize = (str) => {
   const str2 = arr.join(" ");
   return str2;
 };
+
+export const unCamelCase = (str) => {
+  return str
+    .replace(/([a-z])([A-Z])/g, "$1 $2")
+    .replace(/\b([A-Z]+)([A-Z])([a-z])/, "$1 $2$3");
+};
