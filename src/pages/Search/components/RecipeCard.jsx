@@ -6,6 +6,7 @@ import { unCamelCase } from "../../../utilities/capitalize";
 const RecipeCard = ({ item }) => {
   let tags = [];
   for (const key in item) {
+    if (tags.length > 3) break;
     item[key] === true && tags.push(key);
   }
   // console.log(item);
@@ -13,7 +14,7 @@ const RecipeCard = ({ item }) => {
   return (
     <Card className="max-w-[300px] sm:flex sm:max-w-[825px] sm:w-full bg-white sm:justify-between sm:items-center sm:mx-auto">
       <div className="flex flex-col sm:flex-row">
-        <div className="relative w-[300px]s w-max h-[171px] overflow-hidden">
+        <div className="relative sm:min-w-[270px] h-min sm:w-min w-max  overflow-hidden">
           <img
             className="h-full object-cover w-[298px] sm:w-[270px] rounded-t-lg sm:rounded-t-none sm:rounded-l-lg sm:rounded-tl-lg "
             src={item.image}
