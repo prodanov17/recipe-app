@@ -23,7 +23,7 @@ const SearchByName = () => {
   };
 
   const submitHandler = async (e) => {
-    let endUrl = `/search?query=${e.target.searchBar.value}`;
+    let endUrl = `/search/name?query=${e.target.searchBar.value}`;
     e.preventDefault();
     if (e.target.searchBar.value.trim().length === 0) {
       return;

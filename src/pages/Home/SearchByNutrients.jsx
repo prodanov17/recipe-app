@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useOutletContext } from "react-router";
+import { useOutletContext, useNavigate } from "react-router";
 import {
   DietIcon,
   InfoIcon,
@@ -21,6 +21,7 @@ const maxValueFats = 100;
 const maxValueProtein = 100;
 
 const SearchByNutrients = () => {
+  const navigate = useNavigate();
   const [advancedSearch, toggleAdvancedSearch] = useState(false);
   const tagContext = useOutletContext();
 
@@ -30,14 +31,28 @@ const SearchByNutrients = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log(e.target.searchBar.value);
-    console.log((maxValueCalories * e.target.calories.value) / 100);
-    console.log((maxValueCarbs * e.target.carbs.value) / 100);
-    console.log((maxValueFats * e.target.fats.value) / 100);
-    console.log((maxValueProtein * e.target.protein.value) / 100);
-    console.log(tagContext.cuisineTags);
-    console.log(tagContext.dietTags);
-    console.log(tagContext.intoleranceTags);
+    const maxCalories = (maxValueCalories * e.target.calories.value) / 100;
+    const maxCarbs = (maxValueCarbs * e.target.carbs.value) / 100;
+    const maxFats = (maxValueFats * e.target.fats.value) / 100;
+    const maxProtein = (maxValueProtein * e.target.protein.value) / 100;
+
+    let endUrl = `/search/nutrients?maxCalories=${maxCalories}&maxCarbs=${maxCarbs}&maxFat=${maxFats}&maxProtein=${maxProtein}`;
+
+    const cuisineTags = [...tagContext.cuisineTags].join(",");
+    const dietTags = [...tagContext.dietTags].join(",");
+    const intoleranceTags = [...tagContext.intoleranceTags].join(",");
+    if (cuisineTags.length > 0) endUrl += `&cuisine=${cuisineTags}`;
+    if (dietTags.length > 0) endUrl += `&diet=${dietTags}`;
+    if (intoleranceTags.length > 0) endUrl += `&intolerance=${intoleranceTags}`;
+    if (e.target.searchBar) {
+      if (
+        e.target.searchBar.value !== null ||
+        e.target.searchBar.value !== ""
+      ) {
+        endUrl += `&query=${e.target.searchBar.value}`;
+      }
+    }
+    navigate(endUrl);
   };
 
   return (
@@ -79,7 +94,12 @@ const SearchByNutrients = () => {
         }`}
       >
         <div className="w-full">
-          <Slider id="calories" unit="kcal" maxValue={1200} className="my-4">
+          <Slider
+            id="calories"
+            unit="kcal"
+            maxValue={maxValueCalories}
+            className="my-4"
+          >
             <p className="flex items-center gap-2">
               Calories{" "}
               {
@@ -89,7 +109,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider id="carbs" unit="g" maxValue={200} className="mb-4">
+          <Slider id="carbs" unit="g" maxValue={maxValueCarbs} className="mb-4">
             <p className="flex items-center gap-2">
               Carbs{" "}
               {
@@ -99,7 +119,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider id="fats" unit="g" maxValue={100} className="mb-4">
+          <Slider id="fats" unit="g" maxValue={maxValueFats} className="mb-4">
             <p className="flex items-center gap-2">
               Fats{" "}
               {
@@ -109,7 +129,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider id="protein" unit="g" maxValue={100}>
+          <Slider id="protein" unit="g" maxValue={maxValueProtein}>
             <p className="flex items-center gap-2">
               Protein{" "}
               {
