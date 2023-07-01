@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import { ClockIcon } from "../../../assets/icons";
 import LineFill from "../../../UI/LineFill";
 import { unCamelCase } from "../../../utilities/capitalize";
@@ -11,11 +11,11 @@ const RecipeHero = ({ item }) => {
   }
   return (
     <section className="flex flex-col gap-8 lg:flex-row text-black lg:justify-between sm:items-start items-center ">
-      <div className="flex gap-2 flex-col lg:flex-row">
+      <div className="flex gap-2 flex-col sm:flex-row">
         <div className="w-[300px] object-contain overflow-hidden">
-          <img src={item.image} alt="" />
+          <img src={item.image} alt="" loading={"lazy"} />
         </div>
-        <div className="flex flex-col justify-between px-0 lg:px-4">
+        <div className="flex flex-col justify-between px-0 sm:px-4">
           <div>
             <h4 className="uppercase tracking-wide text-neutral-400 text-sm">
               {item.cuisines.join(", ")}

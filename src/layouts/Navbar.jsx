@@ -24,11 +24,11 @@ const Navbar = () => {
   };
 
   return (
-    <header
-      id="navbar"
-      className="fixed top-0 px-4 z-50 inset-x-0 h-max bg-neutral-50 shadow-lg"
-    >
-      <nav className="flex items-center justify-between p-4">
+    <header id="navbar" className="flex relative -top-20">
+      <Link to="/">
+        <Logo />
+      </Link>
+      {/* <nav className="flex items-center justify-between p-4">
         <Link
           to="/"
           className="uppercase font-semibold text-blue-950"
@@ -47,10 +47,10 @@ const Navbar = () => {
         >
           {hideNavbar ? <HamburgerIcon /> : <CloseIcon />}
         </button>
-      </nav>
-      <div className="sm:hidden">
+      </nav> */}
+      {/* <div className="sm:hidden">
         <MobileNavbar hidden={hideNavbar} nav={navbarHandler} />
-      </div>
+      </div> */}
     </header>
   );
 };
