@@ -78,7 +78,7 @@ const RecipeCard = ({ item }) => {
       </div>
       <div className="sm:justify-normal">
         <div className="hidden sm:w-16 sm:h-16 m-2 ml-2 bg-accent-text text-center rounded-full border-[3px] border-accent text-accent sm:flex items-center justify-center sm:mr-8 self-end text-xs leading-2 sm:text-base sm:leading-4">
-          {parseInt(item.nutrition.nutrients[0].amount)} <br />
+          {parseInt(item.nutrition?.nutrients[0]?.amount)} <br />
           kcal
         </div>
       </div>

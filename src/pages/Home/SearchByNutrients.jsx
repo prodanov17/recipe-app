@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useOutletContext, useNavigate } from "react-router";
 import {
   DietIcon,
@@ -31,12 +31,16 @@ const SearchByNutrients = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const maxCalories = (maxValueCalories * e.target.calories.value) / 100;
-    const maxCarbs = (maxValueCarbs * e.target.carbs.value) / 100;
-    const maxFats = (maxValueFats * e.target.fats.value) / 100;
-    const maxProtein = (maxValueProtein * e.target.protein.value) / 100;
+    const minCalories = (maxValueCalories * e.target.caloriesMin.value) / 100;
+    const minCarbs = (maxValueCarbs * e.target.carbsMin.value) / 100;
+    const minFats = (maxValueFats * e.target.fatsMin.value) / 100;
+    const minProtein = (maxValueProtein * e.target.proteinMin.value) / 100;
+    const maxCalories = (maxValueCalories * e.target.caloriesMax.value) / 100;
+    const maxCarbs = (maxValueCarbs * e.target.carbsMax.value) / 100;
+    const maxFats = (maxValueFats * e.target.fatsMax.value) / 100;
+    const maxProtein = (maxValueProtein * e.target.proteinMax.value) / 100;
 
-    let endUrl = `/search/nutrients?maxCalories=${maxCalories}&maxCarbs=${maxCarbs}&maxFat=${maxFats}&maxProtein=${maxProtein}`;
+    let endUrl = `/search/nutrients?maxCalories=${maxCalories}&maxCarbs=${maxCarbs}&maxFat=${maxFats}&maxProtein=${maxProtein}&minCalories=${minCalories}&minCarbs=${minCarbs}&minFat=${minFats}&minProtein=${minProtein}`;
 
     const cuisineTags = [...tagContext.cuisineTags].join(",");
     const dietTags = [...tagContext.dietTags].join(",");
@@ -89,8 +93,8 @@ const SearchByNutrients = () => {
         })}
       </div>
       <section
-        className={`flex-col-reverse w-full  md:flex-row-reverse flex items-center gap-4 ${
-          advancedSearch ? "md:w-[700px]" : "md:w-full"
+        className={`flex-col-reverse w-full  md:flex-row-everse flex items-center gap-4 ${
+          advancedSearch ? "md:-[700px]" : "md:w-full"
         }`}
       >
         <div className="w-full">
@@ -98,7 +102,7 @@ const SearchByNutrients = () => {
             id="calories"
             unit="kcal"
             maxValue={maxValueCalories}
-            className="my-4"
+            className="my-4 "
           >
             <p className="flex items-center gap-2">
               Calories{" "}
@@ -142,7 +146,7 @@ const SearchByNutrients = () => {
         </div>
         {advancedSearch && (
           <>
-            <div className="hidden md:block w-[1px] h-[250px] relative top-4 opacity-30 flex-none bg-neutral-500 rounded-xl"></div>
+            {/*            <div className="hidden md:block w-[1px] h-[250px] relative top-4 opacity-30 flex-none bg-neutral-500 rounded-xl"></div>*/}
             <div className="w-full flex flex-col">
               <Input
                 id="searchBar"

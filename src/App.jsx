@@ -5,6 +5,8 @@ import {
   RouterProvider,
   useLocation,
 } from "react-router-dom";
+import Login from "./pages/Authentication/Login";
+import Signup from "./pages/Authentication/Signup";
 import HomePage from "./pages/Home";
 import SearchByIngredients from "./pages/Home/SearchByIngredients";
 import SearchByName from "./pages/Home/SearchByName";
@@ -37,6 +39,10 @@ const router = createBrowserRouter([
           const cuisineParams = url.searchParams.get("cuisine");
           const dietParams = url.searchParams.get("diet");
           const intoleranceParams = url.searchParams.get("intolerance");
+          const minCalories = url.searchParams.get("minCalories");
+          const minCarbs = url.searchParams.get("minCarbs");
+          const minFat = url.searchParams.get("minFat");
+          const minProtein = url.searchParams.get("minProtein");
           const maxCalories = url.searchParams.get("maxCalories");
           const maxCarbs = url.searchParams.get("maxCarbs");
           const maxFat = url.searchParams.get("maxFat");
@@ -48,10 +54,18 @@ const router = createBrowserRouter([
           axios.defaults.headers.common["x-api-key"] =
             import.meta.env.VITE_API_KEY;
 
-          let endUrl = `https://api.spoonacular.com/recipes/complexSearch?query=${queryParams}&addRecipeNutrition=true&cuisine=${cuisineParams}&diet=${dietParams}&intolerance=${intoleranceParams}&number=${limit}&offset=${offset}`;
+          let endUrl = `https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true`;
+          endUrl +=  queryParams ? '&query=' + queryParams : "&query=";
+          endUrl += cuisineParams ? "&cuisine=" + cuisineParams : "";
+          endUrl += dietParams ? "&diet=" + dietParams : "";
+          endUrl += intoleranceParams
+            ? "&intolerance=" + intoleranceParams
+            : "";
           if (params.type == "nutrients") {
-            endUrl += `&maxCalories=${maxCalories}&maxCarbs=${maxCarbs}&maxFat=${maxFat}&maxProtein=${maxProtein}`;
+            endUrl += `&maxCalories=${maxCalories}&maxCarbs=${maxCarbs}&maxFat=${maxFat}&maxProtein=${maxProtein}&minCalories=${minCalories}&minCarbs=${minCarbs}&minFat=${minFat}&minProtein=${minProtein}`;
           }
+
+          endUrl += `&number=${limit}&offset=${offset}`;
 
           const response = await axios.get(endUrl);
           response.data.totalPages = Math.ceil(
@@ -73,6 +87,14 @@ const router = createBrowserRouter([
         },
       },
     ],
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/register",
+    element: <Signup />,
   },
 ]);
 function App() {

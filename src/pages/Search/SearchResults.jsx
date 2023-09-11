@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Link,
   useLoaderData,
@@ -43,16 +42,16 @@ const SearchResults = () => {
           {currentRoute == "nutrients" && (
             <div className="flex gap-4 flex-wrap">
               <p className="text-base">
-                Max Calories: <b>{urlParams.get("maxCalories")}</b> kcal
+                Calories: <b>{urlParams.get("minCalories")} - {urlParams.get("maxCalories")}</b> kcal
               </p>
               <p className="text-base">
-                Max Carbs: <b>{urlParams.get("maxCarbs")}</b> g
+                Carbs: <b>{urlParams.get("minCarbs")} - {urlParams.get("maxCarbs")}</b> g
               </p>
               <p className="text-base">
-                Max Fat: <b>{urlParams.get("maxFat")}</b> g
+                Fat: <b>{urlParams.get("minFat")} - {urlParams.get("maxFat")}</b> g
               </p>
               <p className="text-base">
-                Max Protein: <b>{urlParams.get("maxProtein")}</b> g
+                Protein: <b>{urlParams.get("minProtein")} - {urlParams.get("maxProtein")}</b> g
               </p>
             </div>
           )}
@@ -64,8 +63,8 @@ const SearchResults = () => {
       <div className="mt-4 flex flex-col gap-2 w-full items-center sm:w-[90vw] sm:mx-auto">
         {searchResponse.data.results.map((e) => {
           return (
-            <Link to={`../recipes/${e.id}`} className="group w-full ">
-              <RecipeCard key={e.id} item={e} />
+            <Link to={`../recipes/${e.id}`} className="group w-full " key={e.id}>
+              <RecipeCard item={e} />
             </Link>
           );
         })}
@@ -92,7 +91,6 @@ const SearchResults = () => {
           className="px-1  py-1 bg-primary text-primary-text rounded disabled:text-neutral-500"
           disabled={urlParams.get("page") == searchResponse.data.totalPages}
         >
-          {console.log(urlParams.get("page"))}
           <ChevronRight />
         </button>
       </div>
