@@ -8,7 +8,7 @@ const Input = ({
   children,
   className,
   type,
-  tagHandler,
+  tagHandler = () => {},
   suggestions = [],
   autocomplete = false,
 }) => {
@@ -43,6 +43,7 @@ const Input = ({
         onChange={handleSuggestions}
         type={type || "text"}
         id={id}
+        name={id}
         ref={inputRef}
         placeholder={placeholder}
         className="bg-white text-neutral-500 px-4 py-2 rounded-lg pl-12 w-full outline-none focus:ring-2 focus:ring-accent peer"
@@ -51,14 +52,14 @@ const Input = ({
       {
         <Card
           className={
-            "absolute top-full z-10 max-h-28 overflow-auto mt-1 left-0 w-full text-black rounded p-0 hidden peer-focus:block"
+            "absolute top-full z-10 max-h-28 overflow-auto mt-1 left-0 w-full text-black rounded p-0 hidden peer-focus:block test"
           }
         >
           {newSuggestions.map((e, index) => (
             <button
               key={index}
               onMouseDown={(e) => {
-                tagHandler(e);
+                tagHandler(e, id);
                 setSuggestions(suggestions);
                 // toggleSuggestions(false);
                 inputRef.current.value = "";

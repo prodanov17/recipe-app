@@ -1,0 +1,11 @@
+#!/bin/sh
+
+echo "Switching to branch master"
+git checkout master
+
+echo "Building app"
+npm run build
+
+echo "Deploying files to server"
+rsync -a ./dist/ prodanov17@172.105.73.122:~/filee
+echo "Deployment complete"

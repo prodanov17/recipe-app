@@ -11,24 +11,58 @@ import { Cuisines } from "../../constants/Cuisines";
 import Tag from "../../UI/Tag";
 import { Diets } from "../../constants/diets";
 import { Intolerances } from "../../constants/intolerances";
-import { useOutletContext } from "react-router";
+import { useNavigate, useOutletContext } from "react-router";
 
 const SearchByName = () => {
   const [advancedSearch, setAdvancedSearch] = useState(false);
+  const navigate = useNavigate();
   const tagContext = useOutletContext();
 
   const advancedSearchHandler = () => {
     setAdvancedSearch((prev) => !prev);
   };
 
+  const submitHandler = async (e) => {
+    let endUrl = `/search/name?query=${e.target.searchBar.value}`;
+    e.preventDefault();
+    if (e.target.searchBar.value.trim().length === 0) {
+      return;
+    }
+    const cuisineTags = [...tagContext.cuisineTags].join(",");
+    const dietTags = [...tagContext.dietTags].join(",");
+    const intoleranceTags = [...tagContext.intoleranceTags].join(",");
+    if (cuisineTags.length > 0) endUrl += `&cuisine=${cuisineTags}`;
+    if (dietTags.length > 0) endUrl += `&diet=${dietTags}`;
+    if (intoleranceTags.length > 0) endUrl += `&intolerance=${intoleranceTags}`;
+    navigate(endUrl);
+  };
+
   const cuisineHandler = () => {};
   return (
-    <>
+    <form className="flex flex-col gap-4" onSubmit={submitHandler}>
       <SearchTabs active="name" />
       <div className="flex gap-1 items-center self-start max-w-[500px] flex-wrap">
-        {[...tagContext.tags].map((e, index) => {
+        {[...tagContext.cuisineTags].map((e, index) => {
           return (
-            <Tag key={index} removeTag={tagContext.removeTag}>
+            <Tag key={index} removeTag={tagContext.removeTag} type="cuisine">
+              {e}
+            </Tag>
+          );
+        })}
+        {[...tagContext.dietTags].map((e, index) => {
+          return (
+            <Tag key={index} removeTag={tagContext.removeTag} type="diets">
+              {e}
+            </Tag>
+          );
+        })}
+        {[...tagContext.intoleranceTags].map((e, index) => {
+          return (
+            <Tag
+              key={index}
+              removeTag={tagContext.removeTag}
+              type="intolerances"
+            >
               {e}
             </Tag>
           );
@@ -48,7 +82,7 @@ const SearchByName = () => {
         <>
           <Input
             onChange={cuisineHandler}
-            id="searchBar"
+            id="cuisine"
             placeholder="Select cuisines"
             type="text"
             suggestions={Cuisines}
@@ -58,7 +92,7 @@ const SearchByName = () => {
             <RecipesIcon />
           </Input>
           <Input
-            id="searchBar"
+            id="diets"
             placeholder="Select diets"
             type="text"
             suggestions={Diets}
@@ -68,7 +102,7 @@ const SearchByName = () => {
             <DietIcon />
           </Input>
           <Input
-            id="searchBar"
+            id="intolerances"
             placeholder="Select intolerances"
             type="text"
             suggestions={Intolerances}
@@ -81,15 +115,19 @@ const SearchByName = () => {
       )}
 
       <button
+        type="button"
         onClick={advancedSearchHandler}
         className="text-primary self-start pl-4 font-medium underline "
       >
         {!advancedSearch ? "Advanced search..." : "Basic search..."}
       </button>
-      <button className="bg-primary text-white font-medium text-lg w-full shadow-lg mb-8 py-1.5 px-4 rounded-lg">
+      <button
+        type="submit"
+        className="bg-primary text-white font-medium text-lg w-full shadow-lg mb-8 py-1.5 px-4 rounded-lg"
+      >
         Search
       </button>
-    </>
+    </form>
   );
 };
 

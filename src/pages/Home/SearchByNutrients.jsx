@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useOutletContext } from "react-router";
+import { useState } from "react";
+import { useOutletContext, useNavigate } from "react-router";
 import {
   DietIcon,
   InfoIcon,
@@ -15,33 +15,95 @@ import Slider from "../../UI/Slider";
 import Tag from "../../UI/Tag";
 import SearchTabs from "./components/SearchTabs";
 
+const maxValueCalories = 1200;
+const maxValueCarbs = 200;
+const maxValueFats = 100;
+const maxValueProtein = 100;
+
 const SearchByNutrients = () => {
+  const navigate = useNavigate();
   const [advancedSearch, toggleAdvancedSearch] = useState(false);
   const tagContext = useOutletContext();
 
   const advancedSearchHandler = () => {
     toggleAdvancedSearch((prev) => !prev);
   };
-  const cuisineHandler = () => {};
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const minCalories = (maxValueCalories * e.target.caloriesMin.value) / 100;
+    const minCarbs = (maxValueCarbs * e.target.carbsMin.value) / 100;
+    const minFats = (maxValueFats * e.target.fatsMin.value) / 100;
+    const minProtein = (maxValueProtein * e.target.proteinMin.value) / 100;
+    const maxCalories = (maxValueCalories * e.target.caloriesMax.value) / 100;
+    const maxCarbs = (maxValueCarbs * e.target.carbsMax.value) / 100;
+    const maxFats = (maxValueFats * e.target.fatsMax.value) / 100;
+    const maxProtein = (maxValueProtein * e.target.proteinMax.value) / 100;
+
+    let endUrl = `/search/nutrients?maxCalories=${maxCalories}&maxCarbs=${maxCarbs}&maxFat=${maxFats}&maxProtein=${maxProtein}&minCalories=${minCalories}&minCarbs=${minCarbs}&minFat=${minFats}&minProtein=${minProtein}`;
+
+    const cuisineTags = [...tagContext.cuisineTags].join(",");
+    const dietTags = [...tagContext.dietTags].join(",");
+    const intoleranceTags = [...tagContext.intoleranceTags].join(",");
+    if (cuisineTags.length > 0) endUrl += `&cuisine=${cuisineTags}`;
+    if (dietTags.length > 0) endUrl += `&diet=${dietTags}`;
+    if (intoleranceTags.length > 0) endUrl += `&intolerance=${intoleranceTags}`;
+    if (e.target.searchBar) {
+      if (
+        e.target.searchBar.value !== null ||
+        e.target.searchBar.value !== ""
+      ) {
+        endUrl += `&query=${e.target.searchBar.value}`;
+      }
+    }
+    navigate(endUrl);
+  };
+
   return (
-    <>
+    <form
+      className="flex flex-col gap-4 items-center w-full"
+      onSubmit={submitHandler}
+    >
       <SearchTabs active="nutrients" />
       <div className="flex gap-1 items-center self-start max-w-[700px] flex-wrap -mb-2 mt-4">
-        {[...tagContext.tags].map((e, index) => {
+        {[...tagContext.cuisineTags].map((e, index) => {
           return (
-            <Tag key={index} removeTag={tagContext.removeTag}>
+            <Tag key={index} removeTag={tagContext.removeTag} type="cuisine">
+              {e}
+            </Tag>
+          );
+        })}
+        {[...tagContext.dietTags].map((e, index) => {
+          return (
+            <Tag key={index} removeTag={tagContext.removeTag} type="diets">
+              {e}
+            </Tag>
+          );
+        })}
+        {[...tagContext.intoleranceTags].map((e, index) => {
+          return (
+            <Tag
+              key={index}
+              removeTag={tagContext.removeTag}
+              type="intolerances"
+            >
               {e}
             </Tag>
           );
         })}
       </div>
       <section
-        className={`flex-col-reverse w-full  md:flex-row-reverse flex items-center gap-4 ${
-          advancedSearch ? "md:w-[700px]" : "md:w-full"
+        className={`flex-col-reverse w-full  md:flex-row-everse flex items-center gap-4 ${
+          advancedSearch ? "md:-[700px]" : "md:w-full"
         }`}
       >
         <div className="w-full">
-          <Slider unit="kcal" maxValue={1200} className="my-4">
+          <Slider
+            id="calories"
+            unit="kcal"
+            maxValue={maxValueCalories}
+            className="my-4 "
+          >
             <p className="flex items-center gap-2">
               Calories{" "}
               {
@@ -51,7 +113,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider unit="g" maxValue={200} className="mb-4">
+          <Slider id="carbs" unit="g" maxValue={maxValueCarbs} className="mb-4">
             <p className="flex items-center gap-2">
               Carbs{" "}
               {
@@ -61,7 +123,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider unit="g" maxValue={100} className="mb-4">
+          <Slider id="fats" unit="g" maxValue={maxValueFats} className="mb-4">
             <p className="flex items-center gap-2">
               Fats{" "}
               {
@@ -71,7 +133,7 @@ const SearchByNutrients = () => {
               }
             </p>
           </Slider>
-          <Slider unit="g" maxValue={100}>
+          <Slider id="protein" unit="g" maxValue={maxValueProtein}>
             <p className="flex items-center gap-2">
               Protein{" "}
               {
@@ -84,7 +146,7 @@ const SearchByNutrients = () => {
         </div>
         {advancedSearch && (
           <>
-            <div className="hidden md:block w-[1px] h-[250px] relative top-4 opacity-30 flex-none bg-neutral-500 rounded-xl"></div>
+            {/*            <div className="hidden md:block w-[1px] h-[250px] relative top-4 opacity-30 flex-none bg-neutral-500 rounded-xl"></div>*/}
             <div className="w-full flex flex-col">
               <Input
                 id="searchBar"
@@ -95,8 +157,7 @@ const SearchByNutrients = () => {
                 <SearchIcon />
               </Input>
               <Input
-                onChange={cuisineHandler}
-                id="searchBar"
+                id="cuisine"
                 placeholder="Select cuisines"
                 type="text"
                 suggestions={Cuisines}
@@ -107,7 +168,7 @@ const SearchByNutrients = () => {
                 <RecipesIcon />
               </Input>
               <Input
-                id="searchBar"
+                id="diets"
                 placeholder="Select diets"
                 type="text"
                 suggestions={Diets}
@@ -118,7 +179,7 @@ const SearchByNutrients = () => {
                 <DietIcon />
               </Input>
               <Input
-                id="searchBar"
+                id="intolerances"
                 placeholder="Select intolerances"
                 type="text"
                 suggestions={Intolerances}
@@ -133,15 +194,19 @@ const SearchByNutrients = () => {
         )}
       </section>
       <button
+        type="button"
         onClick={advancedSearchHandler}
-        className="text-primary self-start pl-4 font-medium underline "
+        className="text-primary self-start pl-4 font-medium underline"
       >
         {advancedSearch ? "Basic search..." : "Advanced search..."}
       </button>
-      <button className="bg-primary text-white font-medium text-lg w-full shadow-lg mb-8 py-1.5 px-4 rounded-lg">
+      <button
+        type="submit"
+        className="bg-primary text-white font-medium text-lg w-full shadow-lg mb-8 py-1.5 px-4 rounded-lg"
+      >
         Search
       </button>
-    </>
+    </form>
   );
 };
 
