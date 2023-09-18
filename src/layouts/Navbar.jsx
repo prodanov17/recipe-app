@@ -36,21 +36,7 @@ const Navbar = () => {
         >
           <Logo />
         </Link>
-        <div className="hidden sm:block">
-          <DesktopNavbar />
-        </div>
-        <button
-          className="transition-all sm:hidden"
-          onClick={() => {
-            setHideNavbar((prev) => !prev);
-          }}
-        >
-          {hideNavbar ? <HamburgerIcon /> : <CloseIcon />}
-        </button>
       </nav>
-      <div className="sm:hidden">
-        <MobileNavbar hidden={hideNavbar} nav={navbarHandler} />
-      </div>
     </header>
   );
 };

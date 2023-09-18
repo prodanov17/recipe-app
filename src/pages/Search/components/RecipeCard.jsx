@@ -12,7 +12,7 @@ const RecipeCard = ({ item }) => {
   // console.log(item);
 
   return (
-    <Card className="max-w-[300px] sm:flex sm:max-w-[825px] sm:w-full bg-white sm:justify-between sm:items-center sm:mx-auto">
+    <Card className="max-w-[300px] sm:flex sm:max-w-[825px] sm:w-full bg-white sm:justify-between sm:items-center mx-auto sm:mx-auto">
       <div className="flex flex-col sm:flex-row">
         <div className="relative sm:min-w-[270px] h-min sm:w-min w-max  overflow-hidden">
           <img

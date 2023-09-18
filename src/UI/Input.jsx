@@ -8,7 +8,7 @@ const Input = ({
   children,
   className,
   type,
-  tagHandler,
+  tagHandler = () => {},
   suggestions = [],
   autocomplete = false,
 }) => {

@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import ProgressBar from "../../../UI/ProgressBar";
+import { ChevronDown, ChevronUp } from "../../../assets/icons";
 
 const RecipeInstructions = ({ totalSteps, steps, id }) => {
   const [step, setStep] = useState(1);
@@ -15,7 +16,7 @@ const RecipeInstructions = ({ totalSteps, steps, id }) => {
         Step by step instructions
       </h2>
       <div className="flex flex-col sm:flex-row w-2/3">
-        <ProgressBar step={step} />
+        <ProgressBar step={step} totalSteps={totalSteps} />
         <div className="flex flex-col gap-8 text-neutral-800 ">
           <div className="">
             <h4 className="font-semibold mb-1 text-neutral-950">
@@ -60,24 +61,24 @@ const RecipeInstructions = ({ totalSteps, steps, id }) => {
             </ul>
           </div>
         </div>
-      </div>
-      <div className="flex gap-2 mt-12">
-        <button
-          onClick={() => {
-            stepHandler(-1);
-          }}
-          className="py-1 px-12 bg-secondary text-secondary-text rounded-lg"
-        >
-          Back
-        </button>
-        <button
-          onClick={() => {
-            stepHandler(1);
-          }}
-          className="py-1 px-12 bg-secondary text-secondary-text rounded-lg"
-        >
-          Next
-        </button>
+        <div className="flex sm:flex-col flex-row self-center mt-8 gap-2 sm:mt-0 ml-4">
+          <button
+            onClick={() => {
+              stepHandler(-1);
+            }}
+            className="p-2 bg-secondary text-secondary-text rounded-lg"
+          >
+            <ChevronUp/>
+          </button>
+          <button
+            onClick={() => {
+              stepHandler(1);
+            }}
+            className="p-2 bg-secondary text-secondary-text rounded-lg"
+          >
+            <ChevronDown/>
+          </button>
+        </div>
       </div>
     </section>
   );
