@@ -56,7 +56,7 @@ const router = createBrowserRouter(
             const page = url.searchParams.get("page") || 1;
             const offset = limit * (page - 1);
 
-            let endUrl = `https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&addRecipeNutrition=true`;
+            let endUrl = `https://api.spoonacular.com/recipes/complexSearch?addRecipeNutrition=true&instructionsRequired=true`;
 
             endUrl += queryParams ? "&query=" + queryParams : "&query=";
             endUrl += cuisineParams ? "&cuisine=" + cuisineParams : "";
@@ -103,8 +103,8 @@ const router = createBrowserRouter(
       path: "/register",
       element: <Signup />,
     },
-  ]
-  // { basename: "/recipe-app" }
+  ],
+  { basename: "/recipe-app" }
 );
 function App() {
   return <RouterProvider router={router} />;

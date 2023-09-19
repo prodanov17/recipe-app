@@ -84,17 +84,23 @@ const SearchResults = () => {
         </div>
       </Card>
       <div className="mt-4 flex flex-col gap-2 w-full items-center sm:w-[90vw] sm:mx-auto">
-        { searchResponse.data.results.length > 0 ? searchResponse.data.results.map((e) => {
-          return (
-            <Link
-              to={`../recipes/${e.id}`}
-              className="group w-full "
-              key={e.id}
-            >
-              <RecipeCard item={e} />
-            </Link>
-          );
-        }) : <Card className={"sm:max-w-[825px] sm:w-[90vw] sm:mx-auto w-[300px]"}><p className="text-center text-black py-4">No results found!</p></Card>}
+        {searchResponse.data.results.length > 0 ? (
+          searchResponse.data.results.map((e) => {
+            return (
+              <Link
+                to={`../recipes/${e.id}`}
+                className="group w-full "
+                key={e.id}
+              >
+                <RecipeCard item={e} />
+              </Link>
+            );
+          })
+        ) : (
+          <Card className={"sm:max-w-[825px] sm:w-[90vw] sm:mx-auto w-[300px]"}>
+            <p className="text-center text-black py-4">No results found!</p>
+          </Card>
+        )}
       </div>
       <div className="text-primary flex justify-center gap-1 my-4">
         <button
@@ -109,7 +115,7 @@ const SearchResults = () => {
           <ChevronLeft />
         </button>
         <p className="px-3  py-1 bg-primary text-primary-text rounded">
-          {urlParams.get("page") || 1}
+          Page {urlParams.get("page") || 1} of {searchResponse.data.totalPages}
         </p>
         <button
           onClick={() => {

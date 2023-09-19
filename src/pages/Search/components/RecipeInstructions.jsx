@@ -22,19 +22,19 @@ const RecipeInstructions = ({ totalSteps, steps, id }) => {
             <h4 className="font-semibold mb-1 text-neutral-950">
               Instructions
             </h4>
-            <p className="text-neutral-600">{steps[step - 1].step}</p>
+            <p className="text-neutral-600">{steps[step - 1]?.step}</p>
           </div>
           <div>
             <h4 className="font-semibold mb-1 text-neutral-950">
               Ingredients required
             </h4>
             <ul className="list-disc pl-8">
-              {steps[step - 1].ingredients.length === 0 && (
+              {steps[step - 1]?.ingredients.length === 0 && (
                 <p className="text-neutral-500">
                   no ingredients required for this step
                 </p>
               )}
-              {steps[step - 1].ingredients.map((e, index) => {
+              {steps[step - 1]?.ingredients.map((e, index) => {
                 return (
                   <li className="text-neutral-600" key={index}>
                     {e.name}
@@ -46,12 +46,12 @@ const RecipeInstructions = ({ totalSteps, steps, id }) => {
           <div>
             <h4 className="font-semibold mb-1 text-neutral-950">Equipment</h4>
             <ul className="list-disc pl-8">
-              {steps[step - 1].equipment.length === 0 && (
+              {steps[step - 1]?.equipment.length === 0 && (
                 <p className="text-neutral-500">
                   no equipment required for this step
                 </p>
               )}
-              {steps[step - 1].equipment.map((e, index) => {
+              {steps[step - 1]?.equipment.map((e, index) => {
                 return (
                   <li className="text-neutral-600" key={index}>
                     {e.name}
